@@ -99,12 +99,36 @@ queda publicada para siempre.
 
 ---
 
-## Cómo compilar y correr
+## Cómo correr un paso
+
+### La forma corta
+
+Cada carpeta tiene un `correr.bat` que compila y ejecuta de una:
+
+```powershell
+cd paso1-una-clase
+.\correr
+```
+
+En Linux o Mac: `bash correr.sh`
+
+Si hay un error de compilación se detiene y lo dice, en vez de ejecutar
+una versión vieja del programa.
+
+### En VS Code: una sola tecla
+
+Abrí cualquier archivo del paso y apretá **Ctrl+Shift+B**.
+
+Compila y ejecuta la carpeta de ese archivo. Si estás en `paso5-procesos/Proceso.java`,
+corre el paso 5.
+
+### Los comandos de verdad
+
+El `.bat` no hace magia: son estos dos.
 
 **Pasos 1 a 7:**
 
 ```bash
-cd paso1-una-clase
 javac *.java
 java Main
 ```
@@ -112,12 +136,14 @@ java Main
 **Pasos 8 y 9** (hay que incluir el driver):
 
 ```bash
-cd paso8-base-de-datos
 javac -cp ".;mysql-connector-j-9.4.0.jar" *.java
 java  -cp ".;mysql-connector-j-9.4.0.jar" Main
 ```
 
 En Linux o Mac, el separador del classpath es `:` en lugar de `;`.
+
+> `javac` **no dice nada cuando sale bien.** El silencio significa que compiló.
+> Solo habla si hay errores.
 
 > **`-cp` es el classpath**: dónde buscar las clases. El `.` significa
 > "también en esta carpeta". Si lo olvidás en el paso 8, el error es

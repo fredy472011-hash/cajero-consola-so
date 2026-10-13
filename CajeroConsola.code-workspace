@@ -24,6 +24,29 @@
     "editor.rulers": [80],
     "files.encoding": "utf8"
   },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Correr este paso",
+        "type": "shell",
+        "command": ".\\correr.bat",
+        "windows": { "command": ".\\correr.bat" },
+        "linux":   { "command": "bash correr.sh" },
+        "osx":     { "command": "bash correr.sh" },
+        "options": { "cwd": "${fileDirname}" },
+        "group": { "kind": "build", "isDefault": true },
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "clear": true,
+          "focus": true
+        },
+        "detail": "Compila y ejecuta la carpeta del archivo abierto (Ctrl+Shift+B)"
+      }
+    ]
+  },
   "extensions": {
     "recommendations": [
       "vscjava.vscode-java-pack"
