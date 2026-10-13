@@ -1,0 +1,191 @@
+# Cajero Automático — versión de consola, paso a paso
+
+Trabajo práctico de **Informática VI — Sistemas Operativos**.
+
+Este proyecto está pensado para **rehacerlo a mano**, no para copiarlo.
+Son 9 pasos, cada uno en su carpeta, y **cada uno corre solo**.
+
+---
+
+## La regla
+
+> Cada carpeta es un programa completo e independiente.
+> Entrás, compilás, corrés, y funciona. No depende de las otras.
+
+Eso significa que algunos archivos se repiten entre carpetas. Es a propósito:
+así podés abrir el paso 5 sin tener que entender el 1 al 4 primero, y podés
+romper un paso sin romper los demás.
+
+---
+
+## Cómo trabajar
+
+Para cada paso, en orden:
+
+1. Abrí el `LEEME.md` de la carpeta y leé el **objetivo**
+2. Corré el programa y mirá qué hace
+3. Leé el código. Los comentarios explican cada palabra nueva
+4. **Borralo y escribilo de nuevo de memoria.** Acá es donde se aprende
+5. Respondé la **pregunta para pensar** del final
+
+El paso 4 es el que separa a quien leyó de quien entendió.
+
+---
+
+## Los 9 pasos
+
+| # | Carpeta | Qué se aprende | Necesita MySQL |
+|---|---|---|---|
+| 1 | `paso1-una-clase` | Clases, objetos, atributos privados, constructor | no |
+| 2 | `paso2-varias-cuentas` | Listas, buscar, `null` | no |
+| 3 | `paso3-menu` | `Scanner`, `while`, `switch`, `try/catch` | no |
+| 4 | `paso4-dispensador` | Arreglos, `for` con índice, algoritmo voraz | no |
+| 5 | `paso5-procesos` | **Los 5 estados de un proceso**, `enum` | no |
+| 6 | `paso6-hilos` | **Condición de carrera y `synchronized`** | no |
+| 7 | `paso7-planificador` | **FCFS, SJF, Round Robin** y el Gantt | no |
+| 8 | `paso8-base-de-datos` | **JDBC**, memoria de largo plazo | sí |
+| 9 | `paso9-cajero-completo` | Todo junto | sí |
+
+Los pasos 1 a 7 no necesitan nada instalado más que Java.
+
+---
+
+## Qué hay que tener instalado
+
+### Para los pasos 1 a 7 — solo Java
+
+**JDK 21** (o 17 en adelante). Hace falta el **JDK**, no el JRE: el JRE
+solo ejecuta, no trae `javac`.
+
+> https://adoptium.net/es/temurin/releases/ → Windows x64, JDK, `.msi`
+> Tildar **"Set JAVA_HOME variable"** durante la instalación.
+
+Comprobar:
+
+```bash
+java -version      # debe decir 21 (o 17)
+javac -version     # si este falla, instalaste el JRE
+```
+
+### Para los pasos 8 y 9 — además MySQL
+
+**MySQL 8 Server**
+
+> https://dev.mysql.com/downloads/installer/ → opción **Server only**
+> Anotá la contraseña de `root`: hace falta después.
+
+**El driver JDBC** (`mysql-connector-j-9.4.0.jar`)
+
+> https://dev.mysql.com/downloads/connector/j/ → **Platform Independent**
+
+Ya está copiado dentro de `paso8-base-de-datos/` y `paso9-cajero-completo/`.
+Si usás otra versión, cambiá el nombre en los comandos.
+
+**Crear la base** (una sola vez):
+
+```bash
+mysql -u root -p < sql/esquema.sql
+```
+
+**Si tu `root` tiene otra contraseña**, en PowerShell antes de ejecutar:
+
+```powershell
+$env:DB_PASSWORD = "tu_contrasena"
+```
+
+Las credenciales **no están escritas en el código**: se leen de variables
+de entorno. En un repositorio público, una contraseña escrita en el código
+queda publicada para siempre.
+
+---
+
+## Cómo compilar y correr
+
+**Pasos 1 a 7:**
+
+```bash
+cd paso1-una-clase
+javac *.java
+java Main
+```
+
+**Pasos 8 y 9** (hay que incluir el driver):
+
+```bash
+cd paso8-base-de-datos
+javac -cp ".;mysql-connector-j-9.4.0.jar" *.java
+java  -cp ".;mysql-connector-j-9.4.0.jar" Main
+```
+
+En Linux o Mac, el separador del classpath es `:` en lugar de `;`.
+
+> **`-cp` es el classpath**: dónde buscar las clases. El `.` significa
+> "también en esta carpeta". Si lo olvidás en el paso 8, el error es
+> `No suitable driver found for jdbc:mysql://...`
+
+---
+
+## Los temas de la materia y dónde se ven
+
+| Tema | Paso | Cómo se demuestra |
+|---|---|---|
+| Procesos y sus 5 estados | 5 | La bitácora imprime cada cambio con la hora |
+| Entrada/salida bloqueante | 5 | El retiro pasa a `BLOQUEADO` 1,8 segundos |
+| Concurrencia | 6 | Dos hilos retiran al mismo tiempo |
+| Condición de carrera | 6 | El saldo queda en **−50.000** |
+| Exclusión mutua | 6 | `synchronized` lo corrige |
+| Planificación de CPU | 7 | FCFS, SJF, prioridad y Round Robin comparados |
+| Inanición | 7 | SJF deja esperando a las tareas largas |
+| Memoria volátil | 9 | CANCELAR borra tarjeta, PIN y monto |
+| Memoria de largo plazo | 8 y 9 | El saldo en MySQL sobrevive al cierre |
+| Recursos limitados | 4 | El dispensador rechaza montos que no puede formar |
+
+---
+
+## Las dos cosas que hay que mostrar en la defensa
+
+**1. La condición de carrera** (paso 6, o `java Main carrera` en el paso 9)
+
+```
+Saldo inicial: Gs. 150.000
+  Cajero-2 pidio Gs. 100.000  ->  SE LO DIO
+  Cajero-1 pidio Gs. 100.000  ->  SE LO DIO
+Saldo final:   Gs. -50.000
+```
+
+El banco entregó 200.000 teniendo 150.000. Aparecieron Gs. 50.000 de la nada.
+Después, con `synchronized`, el mismo escenario da el resultado correcto.
+
+**2. Las dos memorias** (paso 9, opción 7)
+
+CANCELAR borra tarjeta, PIN y monto en curso. Después vuelve a leer el saldo
+desde MySQL: quedó intacto. Una memoria se borró entera, la otra no se tocó.
+
+---
+
+## Preguntas que puede hacer el profesor
+
+| Pregunta | Dónde está la respuesta |
+|---|---|
+| ¿Por qué `synchronized` y no un semáforo? | `LEEME.md` del paso 6 |
+| ¿Qué significa que un proceso esté BLOQUEADO? | `LEEME.md` del paso 5 |
+| ¿Por qué se rechaza un retiro de 30.000? | `LEEME.md` del paso 4 |
+| ¿Dónde está exactamente la memoria volátil? | `Cajero.java` del paso 9 |
+| ¿Qué política de planificación es mejor? | Última pantalla del paso 7 |
+| ¿Qué es la inyección SQL y cómo la evitan? | `BancoBD.java` del paso 8 |
+
+---
+
+## Cuentas de prueba
+
+| Tarjeta | PIN | Saldo inicial |
+|---|---|---|
+| 1001 | 1234 | Gs. 2.500.000 |
+| 1002 | 4321 | Gs. 1.800.000 |
+| 1003 | 0000 | Gs. 30.000 |
+
+Para volver los saldos al estado original, correr de nuevo:
+
+```bash
+mysql -u root -p < sql/esquema.sql
+```

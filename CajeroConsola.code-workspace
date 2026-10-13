@@ -1,0 +1,33 @@
+{
+  "folders": [
+    { "name": "Paso 1 - Una clase",          "path": "paso1-una-clase" },
+    { "name": "Paso 2 - Varias cuentas",     "path": "paso2-varias-cuentas" },
+    { "name": "Paso 3 - Menu",               "path": "paso3-menu" },
+    { "name": "Paso 4 - Dispensador",        "path": "paso4-dispensador" },
+    { "name": "Paso 5 - Procesos",           "path": "paso5-procesos" },
+    { "name": "Paso 6 - Hilos",              "path": "paso6-hilos" },
+    { "name": "Paso 7 - Planificador",       "path": "paso7-planificador" },
+    { "name": "Paso 8 - Base de datos",      "path": "paso8-base-de-datos" },
+    { "name": "Paso 9 - Cajero completo",    "path": "paso9-cajero-completo" },
+    { "name": "SQL",                         "path": "sql" },
+    { "name": ". (raiz del proyecto)",       "path": "." }
+  ],
+  "settings": {
+    "java.project.referencedLibraries": [
+      "lib/**/*.jar",
+      "*.jar"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "files.exclude": {
+      "**/*.class": true
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "editor.rulers": [80],
+    "files.encoding": "utf8"
+  },
+  "extensions": {
+    "recommendations": [
+      "vscjava.vscode-java-pack"
+    ]
+  }
+}

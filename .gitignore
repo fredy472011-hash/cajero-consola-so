@@ -1,0 +1,18 @@
+# Compilados de Java
+*.class
+
+# El driver de MySQL: se baja aparte (ver LEEME.md)
+*.jar
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Credenciales
+.env
