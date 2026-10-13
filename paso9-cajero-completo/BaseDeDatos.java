@@ -92,15 +92,66 @@ public class BaseDeDatos {
         try (Connection c = conectar()) {
             return c != null && !c.isClosed();
         } catch (SQLException e) {
+
+            String mensaje = e.getMessage();
+
             System.out.println();
             System.out.println("  No se pudo conectar a MySQL:");
-            System.out.println("    " + e.getMessage());
+            System.out.println("    " + mensaje);
             System.out.println();
-            System.out.println("  Revisar:");
-            System.out.println("    1. Que el servicio de MySQL este corriendo");
-            System.out.println("    2. Que la base exista:");
-            System.out.println("       mysql -u root -p < ../sql/esquema.sql");
-            System.out.println("    3. El usuario y la clave");
+
+            /*
+             * Cada error tiene una causa distinta. En vez de mostrar una lista
+             * larga donde hay que adivinar cual es, se detecta el caso y se
+             * dice la solucion exacta.
+             */
+            if (mensaje != null && mensaje.contains("No suitable driver")) {
+
+                System.out.println("  FALTA EL DRIVER EN EL CLASSPATH.");
+                System.out.println();
+                System.out.println("  Java no encontro quien sepa hablar con MySQL.");
+                System.out.println("  El archivo .jar esta en esta carpeta, pero hay que");
+                System.out.println("  decirle a Java que lo use.");
+                System.out.println();
+                System.out.println("  La forma facil:");
+                System.out.println("      .\\correr");
+                System.out.println();
+                System.out.println("  O escribiendo los comandos completos:");
+                System.out.println("      javac -cp \".;mysql-connector-j-9.4.0.jar\" *.java");
+                System.out.println("      java  -cp \".;mysql-connector-j-9.4.0.jar\" Main");
+
+            } else if (mensaje != null && mensaje.contains("Unknown database")) {
+
+                System.out.println("  LA BASE NO EXISTE TODAVIA.");
+                System.out.println();
+                System.out.println("  Hay que crearla una sola vez:");
+                System.out.println("      mysql -u root -p < ../sql/esquema.sql");
+
+            } else if (mensaje != null && mensaje.contains("Access denied")) {
+
+                System.out.println("  USUARIO O CONTRASENA INCORRECTOS.");
+                System.out.println();
+                System.out.println("  Por defecto usa root/root. Si tu clave es otra,");
+                System.out.println("  antes de ejecutar, en PowerShell:");
+                System.out.println("      $env:DB_PASSWORD = \"tu_clave\"");
+
+            } else if (mensaje != null && (mensaje.contains("Communications link")
+                                        || mensaje.contains("Connection refused"))) {
+
+                System.out.println("  MYSQL NO ESTA CORRIENDO.");
+                System.out.println();
+                System.out.println("  Arrancar el servicio:");
+                System.out.println("      services.msc  ->  buscar MySQL80  ->  Iniciar");
+
+            } else {
+
+                System.out.println("  Revisar:");
+                System.out.println("    1. Que el servicio de MySQL este corriendo");
+                System.out.println("    2. Que la base exista:");
+                System.out.println("       mysql -u root -p < ../sql/esquema.sql");
+                System.out.println("    3. El usuario y la clave");
+            }
+
             return false;
         }
     }
