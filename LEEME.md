@@ -162,6 +162,30 @@ $env:Path = "C:\Program Files\Java\jdk-25\bin;" + $env:Path
 
 ---
 
+### Si dice `Public Key Retrieval is not allowed`
+
+MySQL 8 guarda las contraseñas con un método llamado `caching_sha2_password`.
+Para mandar la contraseña, el driver necesita primero **la clave pública del
+servidor**, y por seguridad no la pide solo.
+
+En instalaciones viejas de MySQL no pasa, porque usan el método anterior
+(`mysql_native_password`). Por eso a una persona le funciona y a otra no,
+con exactamente el mismo código.
+
+**Ya está resuelto en el proyecto:** la URL de conexión incluye
+`allowPublicKeyRetrieval=true`. Si ves este error, te falta actualizar:
+
+```powershell
+git pull
+```
+
+> Ese parámetro **no va en un sistema real**: pedir la clave pública por una
+> conexión sin cifrar permite que alguien intercepte la contraseña. Acá es
+> aceptable porque la base está en la misma computadora y no hay red de por
+> medio. En producción se usa SSL.
+
+---
+
 ### Para los pasos 8 y 9 — además MySQL
 
 **MySQL 8 Server**

@@ -41,7 +41,31 @@ public class BaseDeDatos {
      *   cajero_simple  -> el nombre de la base
      */
     private static final String URL =
-            "jdbc:mysql://localhost:3306/cajero_simple?useSSL=false&serverTimezone=UTC";
+            "jdbc:mysql://localhost:3306/cajero_simple"
+            + "?useSSL=false"                    // conexion sin cifrar: es local
+            + "&allowPublicKeyRetrieval=true"    // ver la nota de abajo
+            + "&serverTimezone=UTC";             // zona horaria, para las fechas
+
+    /*
+     * SOBRE allowPublicKeyRetrieval
+     *
+     * MySQL 8 guarda las contrasenas con un metodo llamado
+     * caching_sha2_password. Para mandar la contrasena, el driver primero
+     * necesita LA CLAVE PUBLICA del servidor, y por seguridad no la pide
+     * sola. Sin este parametro el error es:
+     *
+     *     Public Key Retrieval is not allowed
+     *
+     * En instalaciones viejas de MySQL no pasa, porque usan el metodo
+     * anterior (mysql_native_password). Por eso a una persona le funciona
+     * y a otra no, con el mismo codigo.
+     *
+     * OJO - esto NO se pone en un sistema real. Pedirle la clave publica
+     * al servidor por una conexion sin cifrar permite que alguien en el
+     * medio de la red intercepte la contrasena. Acá es aceptable porque
+     * la base esta en la misma computadora (localhost): no hay red de
+     * por medio. En produccion se usa SSL en vez de esto.
+     */
 
     /*
      * El usuario y la clave NO se escriben en el codigo en un sistema real:
@@ -134,6 +158,17 @@ public class BaseDeDatos {
                 System.out.println("  Por defecto usa root/root. Si tu clave es otra,");
                 System.out.println("  antes de ejecutar, en PowerShell:");
                 System.out.println("      $env:DB_PASSWORD = \"tu_clave\"");
+
+            } else if (mensaje != null && mensaje.contains("Public Key Retrieval")) {
+
+                System.out.println("  FALTA allowPublicKeyRetrieval EN LA URL.");
+                System.out.println();
+                System.out.println("  Tu MySQL guarda las contrasenas con el metodo");
+                System.out.println("  caching_sha2_password (el de MySQL 8). El driver");
+                System.out.println("  necesita pedirle la clave publica al servidor.");
+                System.out.println();
+                System.out.println("  Ya esta arreglado en el codigo. Actualiza el proyecto:");
+                System.out.println("      git pull");
 
             } else if (mensaje != null && (mensaje.contains("Communications link")
                                         || mensaje.contains("Connection refused"))) {
