@@ -173,6 +173,12 @@ $env:Path = "C:\Program Files\Java\jdk-25\bin;" + $env:Path
 
 > https://dev.mysql.com/downloads/connector/j/ → **Platform Independent**
 
+**Ojo con el `.zip`:** trae el driver **y todo el código fuente del proyecto**,
+unos 750 archivos. De todo eso **solo sirve uno**: el archivo que termina
+en `.jar`.
+
+Descomprimilo **fuera** del proyecto, sacá el `.jar`, y el resto borralo.
+
 Copiá el `.jar` **dentro de** `paso8-base-de-datos/` y de
 `paso9-cajero-completo/`.
 

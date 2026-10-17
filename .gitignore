@@ -16,3 +16,15 @@ desktop.ini
 
 # Credenciales
 .env
+
+# El .zip del conector de MySQL trae el driver Y todo el codigo fuente.
+# De todo eso solo sirve el .jar. Si alguien descomprime el zip adentro
+# del proyecto, que Git no se llene de cientos de archivos.
+mysql-connector-j-*/
+mysql-connector-java-*/
+
+# Capturas de pantalla y archivos sueltos que no son del proyecto
+*.png
+*.jpg
+*.jpeg
+Captura*
