@@ -173,8 +173,16 @@ $env:Path = "C:\Program Files\Java\jdk-25\bin;" + $env:Path
 
 > https://dev.mysql.com/downloads/connector/j/ → **Platform Independent**
 
-Ya está copiado dentro de `paso8-base-de-datos/` y `paso9-cajero-completo/`.
-Si usás otra versión, cambiá el nombre en los comandos.
+Copiá el `.jar` **dentro de** `paso8-base-de-datos/` y de
+`paso9-cajero-completo/`.
+
+**Sirve cualquier versión.** La página de MySQL siempre da la más nueva, así
+que a cada uno le va a tocar un número distinto, y está bien: los scripts usan
+`-cp ".;*"`, donde el `*` significa *"cualquier .jar de esta carpeta"*.
+
+> El `.jar` está en el `.gitignore`, así que **no se sube al repositorio** y
+> cada uno baja el suyo. Si aparece como cambio pendiente en tu editor, es
+> otra cosa: fijate si lo que tenés para hacer es un `pull`, no un `push`.
 
 **Crear la base** (una sola vez):
 
