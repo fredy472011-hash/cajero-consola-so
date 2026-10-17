@@ -54,18 +54,61 @@ Los pasos 1 a 7 no necesitan nada instalado más que Java.
 
 ### Para los pasos 1 a 7 — solo Java
 
-**JDK 21** (o 17 en adelante). Hace falta el **JDK**, no el JRE: el JRE
-solo ejecuta, no trae `javac`.
+**JDK 17 o posterior** (sirve 17, 21 o 25). Hace falta el **JDK**, no el
+JRE: el JRE solo ejecuta, no trae `javac`.
 
 > https://adoptium.net/es/temurin/releases/ → Windows x64, JDK, `.msi`
-> Tildar **"Set JAVA_HOME variable"** durante la instalación.
 
-Comprobar:
+Durante la instalación, en la pantalla de opciones, **tildar las dos**:
+
+- ☑ **Add to PATH**  ← sin esto `javac` no funciona en la terminal
+- ☑ **Set JAVA_HOME variable**
+
+Comprobar (los dos tienen que responder):
 
 ```bash
-java -version      # debe decir 21 (o 17)
-javac -version     # si este falla, instalaste el JRE
+java -version
+javac -version     # si este falla, falta el PATH o instalaste el JRE
 ```
+
+### Si dice `'javac' no se reconoce como un comando`
+
+Falta la carpeta `bin` del JDK en la variable **`Path`** de Windows.
+
+**Importante:** son dos variables distintas y hacen cosas distintas.
+
+| Variable | Valor | Para qué |
+|---|---|---|
+| `JAVA_HOME` | `C:\Program Files\Java\jdk-21` **sin `in`** | La usan Maven, Gradle y los IDEs |
+| `Path` | debe incluir `%JAVA_HOME%in` **con `in`** | La usa la terminal para encontrar `javac` |
+
+Poner solo `JAVA_HOME` **no alcanza**: cuando escribís `javac`, Windows
+busca en `Path`, no en `JAVA_HOME`.
+
+**Para encontrar dónde quedó instalado el JDK:**
+
+```powershell
+Get-ChildItem "C:\Program Files\" -Recurse -Depth 3 -Filter javac.exe -ErrorAction SilentlyContinue | Select-Object -First 3 FullName
+```
+
+**Para arreglarlo:**
+
+1. Tecla Windows → "variables de entorno" → *Editar las variables de entorno del sistema*
+2. Botón **Variables de entorno…**
+3. `JAVA_HOME` = la carpeta del JDK, **sin** `in`
+4. En `Path` → **Nuevo** → agregar `%JAVA_HOME%in`
+5. **Cerrar VS Code entero y volver a abrirlo.** No alcanza con abrir otra
+   pestaña de terminal: las ventanas abiertas se quedan con las variables
+   viejas.
+
+**Solo para probar en la terminal actual, sin reiniciar nada:**
+
+```powershell
+$env:Path = "C:\Program Files\Java\jdk-21in;" + $env:Path
+javac -version
+```
+
+Eso vale únicamente para esa ventana.
 
 ### Para los pasos 8 y 9 — además MySQL
 
