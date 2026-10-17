@@ -110,6 +110,58 @@ javac -version
 
 Eso vale únicamente para esa ventana.
 
+### Si dice `UnsupportedClassVersionError`
+
+```
+Main has been compiled by a more recent version of the Java Runtime
+(class file version 69.0), this version of the Java Runtime only
+recognizes class file versions up to 52.0
+```
+
+Hay **dos Java instalados**: uno compila y otro ejecuta.
+
+Los numeros son versiones de Java:
+
+| class file version | Java |
+|---|---|
+| 52.0 | Java 8 |
+| 61.0 | Java 17 |
+| 65.0 | Java 21 |
+| 69.0 | Java 25 |
+
+El mensaje de arriba dice: lo compilo Java 25, pero lo ejecuta Java 8.
+
+**Por que pasa.** Oracle instala una carpeta
+`C:\Program Files\Common Files\Oracle\Java\javapath` que **solo tiene
+`java.exe`**, sin `javac.exe`, y suele quedar primera en el `Path`.
+Entonces `javac` no la encuentra ahi y sigue buscando hasta el JDK nuevo,
+pero `java` si la encuentra y se queda con el viejo.
+
+**Comprobar cual se usa:**
+
+```powershell
+where.exe java
+where.exe javac
+java -version
+```
+
+`where.exe` lista todas las rutas encontradas. **Gana la primera.**
+
+**Arreglarlo:** en las variables de entorno, dentro de `Path`, subir
+`%JAVA_HOME%\bin` por encima de la linea de Oracle con el boton **Subir**.
+O borrar la linea de Oracle, que es de un Java 8 viejo.
+
+Despues cerrar VS Code entero y comprobar que `java -version` y
+`javac -version` digan **la misma version**.
+
+**Solo para la terminal actual:**
+
+```powershell
+$env:Path = "C:\Program Files\Java\jdk-25\bin;" + $env:Path
+```
+
+---
+
 ### Para los pasos 8 y 9 — además MySQL
 
 **MySQL 8 Server**
