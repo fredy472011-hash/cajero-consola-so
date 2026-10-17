@@ -8,16 +8,39 @@
 
 ## Cómo correrlo
 
-```bash
-# Una sola vez, crear la base:
+**Una sola vez**, crear la base y sus tablas:
+
+```powershell
 mysql -u root -p < ../sql/esquema.sql
-
-# Compilar y ejecutar CON el driver:
-javac -cp ".;mysql-connector-j-9.4.0.jar" *.java
-java  -cp ".;mysql-connector-j-9.4.0.jar" Main
-
-# Correlo 2 o 3 veces seguidas
 ```
+
+Si tu contraseña de MySQL no es `root`, una sola vez también:
+
+```powershell
+[Environment]::SetEnvironmentVariable("DB_PASSWORD", "tu_clave", "User")
+```
+
+y cerrar VS Code entero para que tome la variable.
+
+Después, cada vez:
+
+```powershell
+.\correr
+```
+
+**Correlo 2 o 3 veces seguidas**: el saldo baja en cada corrida y el
+historial crece, aunque el programa se cierre entre medio.
+
+A mano, si querés ver los comandos completos:
+
+```bash
+javac -cp ".;*" *.java
+java  -cp ".;*" Main
+```
+
+El `*` significa *"cualquier `.jar` de esta carpeta"*, así no importa qué
+versión del driver hayas bajado. En Linux o Mac el separador es `:` en vez
+de `;`.
 
 ## Archivos
 

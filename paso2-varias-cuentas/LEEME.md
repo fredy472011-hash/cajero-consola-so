@@ -6,6 +6,12 @@
 
 ## Cómo correrlo
 
+```powershell
+.\correr
+```
+
+A mano, si preferís:
+
 ```bash
 javac *.java
 java Main

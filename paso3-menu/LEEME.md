@@ -6,10 +6,19 @@
 
 ## Cómo correrlo
 
+```powershell
+.\correr
+```
+
+A mano:
+
 ```bash
 javac *.java
 java Main
 ```
+
+Este paso **espera que escribas**. El cursor se queda parpadeando hasta
+que tecleés algo y apretés Enter.
 
 ## Archivos
 

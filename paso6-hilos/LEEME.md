@@ -8,11 +8,18 @@
 
 ## Cómo correrlo
 
+```powershell
+.\correr
+```
+
+**Correlo 3 o 4 veces seguidas.** La primera demostración a veces falla y a
+veces no: esa intermitencia es justamente lo que hay que mostrar.
+
+A mano:
+
 ```bash
 javac *.java
 java Main
-
-# Correlo 3 o 4 veces seguidas
 ```
 
 ## Archivos

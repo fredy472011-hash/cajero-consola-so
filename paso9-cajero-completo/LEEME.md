@@ -6,14 +6,27 @@
 
 ## Cómo correrlo
 
+Lo mismo que el paso 8: la base tiene que estar creada y el `.jar` en
+esta carpeta.
+
+El cajero:
+
+```powershell
+.\correr
+```
+
+La demostración de la condición de carrera:
+
+```powershell
+.\correr carrera
+```
+
+A mano:
+
 ```bash
-javac -cp ".;mysql-connector-j-9.4.0.jar" *.java
-
-# El cajero:
-java -cp ".;mysql-connector-j-9.4.0.jar" Main
-
-# La condición de carrera:
-java -cp ".;mysql-connector-j-9.4.0.jar" Main carrera
+javac -cp ".;*" *.java
+java  -cp ".;*" Main
+java  -cp ".;*" Main carrera
 ```
 
 ## Archivos

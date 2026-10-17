@@ -6,6 +6,13 @@
 
 ## Cómo correrlo
 
+```powershell
+.\correr
+```
+
+Eso compila y ejecuta de una. Por dentro hace estos dos comandos, que
+podés escribir a mano si querés ver qué pasa:
+
 ```bash
 javac *.java
 java Main
