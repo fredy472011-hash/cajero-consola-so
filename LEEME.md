@@ -79,8 +79,8 @@ Falta la carpeta `bin` del JDK en la variable **`Path`** de Windows.
 
 | Variable | Valor | Para qué |
 |---|---|---|
-| `JAVA_HOME` | `C:\Program Files\Java\jdk-21` **sin `in`** | La usan Maven, Gradle y los IDEs |
-| `Path` | debe incluir `%JAVA_HOME%in` **con `in`** | La usa la terminal para encontrar `javac` |
+| `JAVA_HOME` | `C:\Program Files\Java\jdk-21` **sin `\bin`** | La usan Maven, Gradle y los IDEs |
+| `Path` | debe incluir `%JAVA_HOME%\bin` **con `\bin`** | La usa la terminal para encontrar `javac` |
 
 Poner solo `JAVA_HOME` **no alcanza**: cuando escribís `javac`, Windows
 busca en `Path`, no en `JAVA_HOME`.
@@ -95,8 +95,8 @@ Get-ChildItem "C:\Program Files\" -Recurse -Depth 3 -Filter javac.exe -ErrorActi
 
 1. Tecla Windows → "variables de entorno" → *Editar las variables de entorno del sistema*
 2. Botón **Variables de entorno…**
-3. `JAVA_HOME` = la carpeta del JDK, **sin** `in`
-4. En `Path` → **Nuevo** → agregar `%JAVA_HOME%in`
+3. `JAVA_HOME` = la carpeta del JDK, **sin** `\bin`
+4. En `Path` → **Nuevo** → agregar `%JAVA_HOME%\bin`
 5. **Cerrar VS Code entero y volver a abrirlo.** No alcanza con abrir otra
    pestaña de terminal: las ventanas abiertas se quedan con las variables
    viejas.
@@ -104,7 +104,7 @@ Get-ChildItem "C:\Program Files\" -Recurse -Depth 3 -Filter javac.exe -ErrorActi
 **Solo para probar en la terminal actual, sin reiniciar nada:**
 
 ```powershell
-$env:Path = "C:\Program Files\Java\jdk-21in;" + $env:Path
+$env:Path = "C:\Program Files\Java\jdk-21\bin;" + $env:Path
 javac -version
 ```
 
