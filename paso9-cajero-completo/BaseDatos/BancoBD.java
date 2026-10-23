@@ -1,3 +1,7 @@
+package BaseDatos;
+
+import Clases.Cuenta;
+
 /*
  * PASO 8 - El banco que lee y escribe en MySQL
  *

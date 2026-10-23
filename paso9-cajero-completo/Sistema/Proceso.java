@@ -1,3 +1,7 @@
+package Sistema;
+
+import Clases.Cuenta;
+
 /*
  * PASO 5 - Una transaccion vista como PROCESO del sistema operativo
  *

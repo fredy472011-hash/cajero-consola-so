@@ -1,3 +1,11 @@
+package Vista;
+
+import Clases.Cuenta;
+import BaseDatos.BancoBD;
+import Sistema.Proceso;
+import Sistema.Dispensador;
+import Sistema.Bitacora;
+
 /*
  * PASO 9 - El cajero completo
  *

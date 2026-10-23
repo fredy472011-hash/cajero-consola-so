@@ -1,3 +1,7 @@
+package Sistema;
+
+import Clases.Cuenta;
+
 /*
  * PASO 6 - Un hilo que retira plata
  *

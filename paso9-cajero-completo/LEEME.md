@@ -24,18 +24,23 @@ La demostración de la condición de carrera:
 A mano:
 
 ```bash
-javac -cp ".;*" *.java
-java  -cp ".;*" Main
-java  -cp ".;*" Main carrera
+javac -cp ".;*" -d out Principal\*.java Vista\*.java Clases\*.java Sistema\*.java BaseDatos\*.java Interfaces_General\*.java
+java  -cp "out;*" Principal.Main
+java  -cp "out;*" Principal.Main carrera
 ```
 
 ## Archivos
 
 | Archivo | Qué hace |
 |---|---|
-| `Cajero.java` | El menú completo, con la demostración de las dos memorias. |
-| `Main.java` | Arranca el cajero, o la demo de concurrencia con `java Main carrera`. |
-| `(el resto)` | Todas las clases de los pasos anteriores. |
+| `Principal/Main.java` | Arranca el cajero, o la demo de concurrencia con `.\correr carrera`. |
+| `Vista/Cajero.java` | El menú completo, con la demostración de las dos memorias. |
+| `Clases/` | Los datos: `Cuenta`, `Billete`. |
+| `Sistema/` | Lo de sistemas operativos: `Proceso`, `EstadoProceso`, `Dispensador`, `Bitacora`, `HiloRetiro`. |
+| `BaseDatos/` | Hablar con MySQL: `BaseDeDatos`, `BancoBD`, `BilleteDto`. |
+| `Interfaces_General/` | Los contratos: `CrudSimpleInterface`. |
+
+Cada carpeta es un paquete. Los `.class` compilados quedan en la carpeta `out`.
 
 ## Lo que aparece nuevo en este paso
 
@@ -50,4 +55,4 @@ java  -cp ".;*" Main carrera
 
 **¿Qué hay que mostrarle al profesor?**
 
-**La opción 7 (CANCELAR).** Borra toda la memoria volátil —tarjeta, PIN, monto— y después vuelve a leer el saldo desde MySQL, que quedó intacto. Esa pantalla sola demuestra la diferencia entre los dos tipos de memoria. Y después `java Main carrera`, que muestra el saldo en −50.000.
+**La opción 7 (CANCELAR).** Borra toda la memoria volátil —tarjeta, PIN, monto— y después vuelve a leer el saldo desde MySQL, que quedó intacto. Esa pantalla sola demuestra la diferencia entre los dos tipos de memoria. Y después `.\correr carrera`, que muestra el saldo en −50.000.

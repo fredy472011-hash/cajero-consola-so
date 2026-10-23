@@ -1,3 +1,5 @@
+package Sistema;
+
 /*
  * PASO 5 - Los estados de un proceso
  *

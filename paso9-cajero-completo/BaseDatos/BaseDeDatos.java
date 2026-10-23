@@ -1,3 +1,5 @@
+package BaseDatos;
+
 /*
  * PASO 8 - Hablar con MySQL desde Java
  *

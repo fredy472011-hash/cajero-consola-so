@@ -11,7 +11,7 @@ if ! ls *.jar >/dev/null 2>&1; then
 fi
 
 echo Compilando...
-if ! javac -cp ".:*" *.java; then
+if ! javac -cp ".:*" -d out Principal/*.java Vista/*.java Clases/*.java Sistema/*.java BaseDatos/*.java Interfaces_General/*.java; then
     echo
     echo '  >> HAY ERRORES DE COMPILACION. Mira el mensaje de arriba.'
     exit 1
@@ -19,4 +19,4 @@ fi
 
 echo 'Listo. Ejecutando...'
 echo
-java -cp ".:*" Main "$@"
+java -cp "out:*" Principal.Main "$@"

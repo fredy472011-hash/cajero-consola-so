@@ -1,3 +1,5 @@
+package Sistema;
+
 /*
  * PASO 5 - La bitacora del sistema
  *
