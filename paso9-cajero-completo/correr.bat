@@ -21,7 +21,7 @@ if not exist *.jar (
 )
 
 echo Compilando...
-javac -cp ".;*" -d out Principal\*.java Vista\*.java Clases\*.java Sistema\*.java BaseDatos\*.java Interfaces_General\*.java
+javac -cp ".;*" -d out Principal\*.java Vista\*.java Clases\*.java Sistema\*.java BaseDatos\*.java Service\*.java Interfaces_General\*.java
 
 if errorlevel 1 (
     echo.

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +15,16 @@ import Interfaces_General.CrudSimpleInterface;
 
 public class BilleteDto implements CrudSimpleInterface<Billete>{
 
-    // Trae solo los billetes activos (estaActivo = 1)
+    // Trae solo los billetes activos (estaActivo = 1).
+    // Statement y no PreparedStatement: el SQL es fijo, no lleva ningun ? ni dato de afuera.
     @Override
     public List<Billete> seleccionar() {
         List<Billete> billetes = new ArrayList<>();
         String consulta = "SELECT id, cantidad, nombre FROM billete WHERE estaActivo = 1";
 
         try (Connection c = BaseDeDatos.conectar();
-             PreparedStatement ps = c.prepareStatement(consulta);
-             ResultSet rs = ps.executeQuery()) { //El ResultSet ahora también está dentro del try (...), así se cierra solo y no hacen falta ps.close() ni rs.close().
+             Statement st = c.createStatement();
+             ResultSet rs = st.executeQuery(consulta)) { //El ResultSet ahora también está dentro del try (...), así se cierra solo y no hacen falta st.close() ni rs.close().
 
             while (rs.next()) {
                 billetes.add(new Billete(
@@ -50,6 +52,7 @@ public class BilleteDto implements CrudSimpleInterface<Billete>{
         String consulta = "INSERT INTO billete (cantidad, nombre) VALUES (?, ?)";
 
         try (Connection c = BaseDeDatos.conectar();
+             // Permite ejecutar sentencias SQL con parametros de entrada (los ?)
              PreparedStatement ps = c.prepareStatement(consulta)) {
 
             ps.setInt(1, obj.getCantidad());
@@ -69,6 +72,7 @@ public class BilleteDto implements CrudSimpleInterface<Billete>{
         String consulta = "UPDATE billete SET cantidad = ?, nombre = ? WHERE id = ?";
 
         try (Connection c = BaseDeDatos.conectar();
+             // Permite ejecutar sentencias SQL con parametros de entrada (los ?)
              PreparedStatement ps = c.prepareStatement(consulta)) {
 
             ps.setInt(1, obj.getCantidad());
@@ -90,6 +94,7 @@ public class BilleteDto implements CrudSimpleInterface<Billete>{
         String consulta = "UPDATE billete SET estaActivo = 0 WHERE id = ?";
 
         try (Connection c = BaseDeDatos.conectar();
+             // Permite ejecutar sentencias SQL con parametros de entrada (los ?)
              PreparedStatement ps = c.prepareStatement(consulta)) {
 
             ps.setInt(1, id);
@@ -101,14 +106,15 @@ public class BilleteDto implements CrudSimpleInterface<Billete>{
         }
     }
 
-    // Cuantos billetes activos hay. COUNT(*) devuelve una sola fila con un numero
+    // Cuantos billetes activos hay. COUNT(*) devuelve una sola fila con un numero.
+    // Tambien Statement: SQL fijo, sin ?
     @Override
     public int total() {
         String consulta = "SELECT COUNT(*) FROM billete WHERE estaActivo = 1";
 
         try (Connection c = BaseDeDatos.conectar();
-             PreparedStatement ps = c.prepareStatement(consulta);
-             ResultSet rs = ps.executeQuery()) {
+             Statement st = c.createStatement();
+             ResultSet rs = st.executeQuery(consulta)) {
 
             if (rs.next()) {
                 return rs.getInt(1);   // la columna 1 es el resultado del COUNT
