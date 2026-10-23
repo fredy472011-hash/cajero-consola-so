@@ -69,13 +69,16 @@ INSERT INTO cuentas (numero, titular, pin, saldo) VALUES
     ('1002', 'Elias Benitez', '4321', 1800000),
     ('1003', 'Cuenta Vacia',  '0000',   30000);
 
-CREATE TABLE IF NOT EXISTS billete (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    cantidad INT,
-    nombre   VARCHAR(70)
-);
+-- Se borra y se vuelve a crear: si alguien ya la tenia sin la columna
+-- estaActivo, asi queda con la estructura nueva.
+DROP TABLE IF EXISTS billete;
 
-DELETE FROM billete;
+CREATE TABLE billete (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    cantidad   INT,
+    nombre     VARCHAR(70),
+    estaActivo TINYINT NOT NULL DEFAULT 1   -- 1 = activo, 0 = desactivado
+);
 
 INSERT INTO billete (cantidad, nombre) VALUES
     (40, 'Cien mil'),

@@ -28,3 +28,6 @@ mysql-connector-java-*/
 *.jpg
 *.jpeg
 Captura*
+
+# El paso 10 (casetes) no se sube
+paso10-casetes-en-bd/

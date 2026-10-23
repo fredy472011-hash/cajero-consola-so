@@ -14,10 +14,11 @@ import Interfaces_General.CrudSimpleInterface;
 
 public class BilleteDto implements CrudSimpleInterface<Billete>{
 
+    // Trae solo los billetes activos (estaActivo = 1)
     @Override
     public List<Billete> seleccionar() {
         List<Billete> billetes = new ArrayList<>();
-        String consulta = "SELECT cantidad, nombre FROM billete";
+        String consulta = "SELECT id, cantidad, nombre FROM billete WHERE estaActivo = 1";
 
         try (Connection c = BaseDeDatos.conectar();
              PreparedStatement ps = c.prepareStatement(consulta);
@@ -25,6 +26,7 @@ public class BilleteDto implements CrudSimpleInterface<Billete>{
 
             while (rs.next()) {
                 billetes.add(new Billete(
+                        rs.getInt("id"),
                         rs.getInt("cantidad"),
                         rs.getString("nombre")));
             }
@@ -36,34 +38,86 @@ public class BilleteDto implements CrudSimpleInterface<Billete>{
     }
 
     public static void main(String[] args) {
-        List<Billete> billetes = new ArrayList<>();
         BilleteDto dto = new BilleteDto();
-        billetes = dto.seleccionar();
-        System.out.println(billetes.toString());
+        System.out.println(dto.seleccionar());
+        System.out.println("Billetes activos: " + dto.total());
     }
 
+    // El id no se manda: lo pone MySQL solo (AUTO_INCREMENT).
+    // Y estaActivo tampoco: por defecto vale 1 (DEFAULT 1 en la tabla).
     @Override
     public boolean insertar(Billete obj) {
-      
-        throw new UnsupportedOperationException("Unimplemented method 'insertar'");
+        String consulta = "INSERT INTO billete (cantidad, nombre) VALUES (?, ?)";
+
+        try (Connection c = BaseDeDatos.conectar();
+             PreparedStatement ps = c.prepareStatement(consulta)) {
+
+            ps.setInt(1, obj.getCantidad());
+            ps.setString(2, obj.getNombre());
+            // executeUpdate devuelve cuantas filas cambio: si es mas de 0, salio bien
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error al insertar el billete: " + e.getMessage());
+            return false;
+        }
     }
 
+    // Cambia cantidad y nombre del billete que tiene ese id
     @Override
     public boolean actualizar(Billete obj) {
-   
-        throw new UnsupportedOperationException("Unimplemented method 'actualizar'");
+        String consulta = "UPDATE billete SET cantidad = ?, nombre = ? WHERE id = ?";
+
+        try (Connection c = BaseDeDatos.conectar();
+             PreparedStatement ps = c.prepareStatement(consulta)) {
+
+            ps.setInt(1, obj.getCantidad());
+            ps.setString(2, obj.getNombre());
+            ps.setInt(3, obj.getId());
+            // Si no existe ningun billete con ese id, cambia 0 filas y devuelve false
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el billete: " + e.getMessage());
+            return false;
+        }
     }
 
+    // No borra la fila: la marca como inactiva (estaActivo = 0).
+    // Asi no se pierde el dato, y seleccionar() y total() ya no la cuentan.
     @Override
     public boolean desactivar(int id) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'desactivar'");
+        String consulta = "UPDATE billete SET estaActivo = 0 WHERE id = ?";
+
+        try (Connection c = BaseDeDatos.conectar();
+             PreparedStatement ps = c.prepareStatement(consulta)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error al desactivar el billete: " + e.getMessage());
+            return false;
+        }
     }
 
+    // Cuantos billetes activos hay. COUNT(*) devuelve una sola fila con un numero
     @Override
     public int total() {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'total'");
+        String consulta = "SELECT COUNT(*) FROM billete WHERE estaActivo = 1";
+
+        try (Connection c = BaseDeDatos.conectar();
+             PreparedStatement ps = c.prepareStatement(consulta);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);   // la columna 1 es el resultado del COUNT
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al contar los billetes: " + e.getMessage());
+        }
+        return 0;
     }
-    
+
 }
