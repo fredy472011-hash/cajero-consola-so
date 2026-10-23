@@ -25,7 +25,7 @@ public class Main {
         Scanner teclado = new Scanner(System.in);
 
         // 3. Se crea el cajero y se le pasan las dos cosas que necesita
-        Cajero cajero = new Cajero(banco, teclado);
+        Cajero cajero = new Cajero(banco, teclado, null);
 
         // 4. Arranca
         cajero.iniciar();
