@@ -69,6 +69,18 @@ INSERT INTO cuentas (numero, titular, pin, saldo) VALUES
     ('1002', 'Elias Benitez', '4321', 1800000),
     ('1003', 'Cuenta Vacia',  '0000',   30000);
 
+CREATE TABLE IF NOT EXISTS billete (
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    cantidad INT,
+    nombre   VARCHAR(70)
+);
+
+DELETE FROM billete;
+
+INSERT INTO billete (cantidad, nombre) VALUES
+    (40, 'Cien mil'),
+    (30, 'Cincuenta mil');
+
 -- --------------------------------------------------------------------
 -- Consultas para probar a mano antes de escribir el Java
 -- --------------------------------------------------------------------
