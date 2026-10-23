@@ -24,7 +24,7 @@ La demostración de la condición de carrera:
 A mano:
 
 ```bash
-javac -cp ".;*" -d out Principal\*.java Vista\*.java Clases\*.java Sistema\*.java BaseDatos\*.java Interfaces_General\*.java
+javac -cp ".;*" -d out Principal\*.java Vista\*.java Clases\*.java Sistema\*.java BaseDatos\*.java Service\*.java Interfaces_General\*.java
 java  -cp "out;*" Principal.Main
 java  -cp "out;*" Principal.Main carrera
 ```
@@ -38,6 +38,7 @@ java  -cp "out;*" Principal.Main carrera
 | `Clases/` | Los datos: `Cuenta`, `Billete`. |
 | `Sistema/` | Lo de sistemas operativos: `Proceso`, `EstadoProceso`, `Dispensador`, `Bitacora`, `HiloRetiro`. |
 | `BaseDatos/` | Hablar con MySQL: `BaseDeDatos`, `BancoBD`, `BilleteDto`. |
+| `Service/` | La lógica de negocio (las reglas): `BilleteService`. |
 | `Interfaces_General/` | Los contratos: `CrudSimpleInterface`. |
 
 Cada carpeta es un paquete. Los `.class` compilados quedan en la carpeta `out`.
